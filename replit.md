@@ -25,3 +25,24 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Artifacts
+
+### Indian Dumb Charades (Dhumsharath)
+- **Path**: `artifacts/dhumsharath/`
+- **Type**: React + Vite (frontend-only, no backend)
+- **Preview path**: `/`
+- **Description**: A party game app for Indian Dumb Charades with Telugu movies
+
+### Features
+- 60+ Telugu movies spanning multiple decades and genres (easy/medium/hard)
+- Movies displayed with Telugu script titles
+- Team setup (2-6 teams with custom names)
+- Configurable rounds per team (1-5) and time per round (30-120s)
+- Difficulty selection (easy/medium/hard mix)
+- Real-time countdown timer with color changes
+- Point tracking system per team
+- Hint system for difficult movies
+- Round history and scoreboard
+- Final podium with winner announcement
+- Smooth animations throughout (framer-motion)
