@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Film, ChevronRight, Filter } from "lucide-react";
+import { Search, X, Film, ChevronRight, Filter, PenLine } from "lucide-react";
 import { searchMovies, teluguMovies } from "@/data/movies";
 import type { Movie, Difficulty, Genre } from "@/data/movies";
 
@@ -42,13 +42,26 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
     return movies.sort((a, b) => b.year - a.year);
   }, [query, selectedDifficulty, selectedGenre]);
 
+  const trimmedQuery = query.trim();
+  const hasFilters = !!(selectedDifficulty || selectedGenre || trimmedQuery);
+
   const clearFilters = () => {
     setSelectedDifficulty(null);
     setSelectedGenre(null);
     setQuery("");
   };
 
-  const hasFilters = !!(selectedDifficulty || selectedGenre || query.trim());
+  const handleUseCustom = () => {
+    if (!trimmedQuery) return;
+    const customMovie: Movie = {
+      id: Date.now(),
+      title: trimmedQuery,
+      year: new Date().getFullYear(),
+      genre: "action",
+      difficulty: "medium",
+    };
+    onSelect(customMovie);
+  };
 
   return (
     <motion.div
@@ -80,7 +93,8 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
             type="search"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search movie name, year, genre..."
+            onKeyDown={e => { if (e.key === "Enter" && trimmedQuery) handleUseCustom(); }}
+            placeholder="Search or type any movie name..."
             className="w-full pl-10 pr-10 py-3 bg-background border border-input rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
           />
           {query && (
@@ -90,7 +104,28 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
           )}
         </div>
 
-        {/* Filter toggle */}
+        {/* "Use as custom" button — always visible when there's a query */}
+        <AnimatePresence>
+          {trimmedQuery && (
+            <motion.button
+              data-testid="button-use-custom-movie"
+              onClick={handleUseCustom}
+              className="w-full flex items-center gap-3 bg-primary/10 border border-primary/30 text-primary rounded-xl px-4 py-3 mb-3 font-semibold text-sm hover:bg-primary/20 transition-all text-left"
+              initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+              animate={{ opacity: 1, height: "auto", marginBottom: 12 }}
+              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <PenLine className="w-4 h-4 flex-shrink-0" />
+              <span className="flex-1 truncate">
+                Use <span className="font-black">"{trimmedQuery}"</span> as custom movie
+              </span>
+              <ChevronRight className="w-4 h-4 flex-shrink-0 opacity-60" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+
+        {/* Filter row */}
         <div className="flex items-center gap-2">
           <button
             data-testid="button-toggle-filters"
@@ -121,7 +156,6 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
               className="overflow-hidden"
             >
               <div className="pt-3 space-y-3">
-                {/* Difficulty filter */}
                 <div>
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Difficulty</p>
                   <div className="flex gap-2">
@@ -141,8 +175,6 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
                     ))}
                   </div>
                 </div>
-
-                {/* Genre filter */}
                 <div>
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Genre</p>
                   <div className="flex flex-wrap gap-2">
@@ -171,45 +203,52 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
 
       {/* Movie list */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
-        {results.length === 0 ? (
+        {results.length === 0 && !trimmedQuery && (
           <div className="text-center py-16">
             <Film className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
             <p className="text-muted-foreground font-medium">No movies found</p>
             <button onClick={clearFilters} className="text-primary text-sm mt-2 hover:underline">Clear filters</button>
           </div>
-        ) : (
-          results.map((movie) => (
-            <motion.button
-              key={movie.id}
-              data-testid={`movie-item-${movie.id}`}
-              onClick={() => onSelect(movie)}
-              className="w-full flex items-center gap-3 bg-card border border-card-border rounded-2xl p-3.5 text-left hover:border-primary/40 hover:shadow-sm transition-all group"
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0 text-white text-lg font-black">
-                {genreEmojis[movie.genre]}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-foreground truncate">{movie.title}</p>
-                {movie.teluguTitle && (
-                  <p className="text-xs text-muted-foreground truncate" style={{ fontFamily: "'Noto Sans Telugu', sans-serif" }}>
-                    {movie.teluguTitle}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-muted-foreground">{movie.year}</span>
-                  <span className="text-xs text-muted-foreground capitalize">· {movie.genre}</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${difficultyColors[movie.difficulty]}`}>
-                  {movie.difficulty}
-                </span>
-                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-              </div>
-            </motion.button>
-          ))
         )}
+
+        {results.length === 0 && trimmedQuery && (
+          <div className="text-center py-10">
+            <p className="text-muted-foreground text-sm">No match in the list.</p>
+            <p className="text-muted-foreground/70 text-xs mt-1">Tap the button above to use it as a custom movie.</p>
+          </div>
+        )}
+
+        {results.map((movie) => (
+          <motion.button
+            key={movie.id}
+            data-testid={`movie-item-${movie.id}`}
+            onClick={() => onSelect(movie)}
+            className="w-full flex items-center gap-3 bg-card border border-card-border rounded-2xl p-3.5 text-left hover:border-primary/40 hover:shadow-sm transition-all group"
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0 text-white text-lg font-black">
+              {genreEmojis[movie.genre]}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-foreground truncate">{movie.title}</p>
+              {movie.teluguTitle && (
+                <p className="text-xs text-muted-foreground truncate" style={{ fontFamily: "'Noto Sans Telugu', sans-serif" }}>
+                  {movie.teluguTitle}
+                </p>
+              )}
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xs text-muted-foreground">{movie.year}</span>
+                <span className="text-xs text-muted-foreground capitalize">· {movie.genre}</span>
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${difficultyColors[movie.difficulty]}`}>
+                {movie.difficulty}
+              </span>
+              <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+            </div>
+          </motion.button>
+        ))}
       </div>
     </motion.div>
   );
