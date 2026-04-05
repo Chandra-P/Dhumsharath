@@ -8,20 +8,21 @@ import ResultPage from "@/pages/ResultPage";
 import ScoreboardPage from "@/pages/ScoreboardPage";
 import type { GameSettings, GameState } from "@/data/gameTypes";
 import { getAllMoviesShuffled } from "@/data/movies";
-import type { Difficulty, Movie } from "@/data/movies";
+import type { Movie } from "@/data/movies";
 
 const queryClient = new QueryClient();
 
 function buildRounds(settings: GameSettings) {
-  const { teams, roundsPerTeam, timePerRound, difficulties } = settings;
-  const totalMoviesNeeded = teams.length * roundsPerTeam;
-  const movieQueue = getAllMoviesShuffled(difficulties as Difficulty[], totalMoviesNeeded + 20);
+  const { teams, roundsPerTeam, timePerRound } = settings;
+  // Full corpus, fully shuffled — no count cap, no difficulty filter
+  const shuffled = getAllMoviesShuffled();
 
   const rounds = [];
   let movieIdx = 0;
   for (let r = 0; r < roundsPerTeam; r++) {
     for (const team of teams) {
-      const movie = movieQueue[movieIdx % movieQueue.length];
+      // Cycle through the full shuffled list if needed
+      const movie = shuffled[movieIdx % shuffled.length];
       movieIdx++;
       rounds.push({
         roundNumber: r + 1,

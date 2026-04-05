@@ -1,4 +1,4 @@
-import type { Difficulty, Movie } from "./movies";
+import type { Movie } from "./movies";
 
 export interface Team {
   id: string;
@@ -21,7 +21,6 @@ export interface GameSettings {
   teams: Team[];
   roundsPerTeam: number;
   timePerRound: number;
-  difficulties: Difficulty[];
 }
 
 export type GamePhase =

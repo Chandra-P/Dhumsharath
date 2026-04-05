@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Users, Clock, Target, ChevronRight, Plus, Trash2, Trophy } from "lucide-react";
+import { Users, Clock, Trophy, ChevronRight, Plus, Trash2 } from "lucide-react";
 import type { GameSettings, Team } from "@/data/gameTypes";
 import { TEAM_COLORS } from "@/data/gameTypes";
-import type { Difficulty } from "@/data/movies";
 
 interface SetupPageProps {
   onStart: (settings: GameSettings) => void;
 }
 
-const defaultTeams = [
+const defaultTeams: Team[] = [
   { id: "t1", name: "Team A", score: 0, color: TEAM_COLORS[0] },
   { id: "t2", name: "Team B", score: 0, color: TEAM_COLORS[1] },
 ];
@@ -18,7 +17,6 @@ export default function SetupPage({ onStart }: SetupPageProps) {
   const [teams, setTeams] = useState<Team[]>(defaultTeams);
   const [roundsPerTeam, setRoundsPerTeam] = useState(3);
   const [timePerRound, setTimePerRound] = useState(60);
-  const [difficulties, setDifficulties] = useState<Difficulty[]>(["easy", "medium"]);
   const [step, setStep] = useState<"welcome" | "config">("welcome");
 
   const addTeam = () => {
@@ -41,17 +39,8 @@ export default function SetupPage({ onStart }: SetupPageProps) {
     setTeams(teams.map(t => t.id === id ? { ...t, name } : t));
   };
 
-  const toggleDifficulty = (d: Difficulty) => {
-    if (difficulties.includes(d)) {
-      if (difficulties.length === 1) return;
-      setDifficulties(difficulties.filter(x => x !== d));
-    } else {
-      setDifficulties([...difficulties, d]);
-    }
-  };
-
   const handleStart = () => {
-    onStart({ teams, roundsPerTeam, timePerRound, difficulties });
+    onStart({ teams, roundsPerTeam, timePerRound });
   };
 
   if (step === "welcome") {
@@ -79,14 +68,10 @@ export default function SetupPage({ onStart }: SetupPageProps) {
           <h1 className="text-4xl sm:text-5xl font-black text-foreground mb-3 tracking-tight">
             Indian Dumb Charades
           </h1>
-          <p className="text-xl font-bold text-primary mb-2">
-            ధుమ్ షారాత్
-          </p>
-          <p className="text-muted-foreground text-lg mb-2">
-            Act out Telugu movies without speaking!
-          </p>
+          <p className="text-xl font-bold text-primary mb-2">ధుమ్ షారాత్</p>
+          <p className="text-muted-foreground text-lg mb-2">Act out movies without speaking!</p>
           <p className="text-muted-foreground/70 text-sm mb-10">
-            Guess from 60+ Telugu blockbusters spanning decades
+            240+ movies — Telugu, Hindi, Tamil, Malayalam & more
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -94,7 +79,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
               { icon: "🎭", label: "Act It Out" },
               { icon: "⏱️", label: "Beat the Clock" },
               { icon: "🏆", label: "Win Points" },
-              { icon: "🎊", label: "Telugu Movies" },
+              { icon: "🔍", label: "Pick Any Movie" },
             ].map((item) => (
               <div
                 key={item.label}
@@ -117,7 +102,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </motion.button>
 
-          <p className="mt-6 text-xs text-muted-foreground">2-6 teams · Customizable rounds & timer</p>
+          <p className="mt-6 text-xs text-muted-foreground">2–6 teams · Customizable rounds & timer</p>
         </motion.div>
       </div>
     );
@@ -143,7 +128,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
           <p className="text-muted-foreground mt-1">Customize your game</p>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Teams */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -215,9 +200,8 @@ export default function SetupPage({ onStart }: SetupPageProps) {
               </div>
               <h3 className="font-bold text-foreground text-lg">Rounds per Team</h3>
             </div>
-
             <div className="flex gap-2 flex-wrap">
-              {[1, 2, 3, 4, 5].map(n => (
+              {[1, 2, 3, 4, 5, 6, 8, 10].map(n => (
                 <button
                   key={n}
                   data-testid={`button-rounds-${n}`}
@@ -247,7 +231,6 @@ export default function SetupPage({ onStart }: SetupPageProps) {
               </div>
               <h3 className="font-bold text-foreground text-lg">Time per Round</h3>
             </div>
-
             <div className="flex gap-2 flex-wrap">
               {[30, 45, 60, 90, 120].map(t => (
                 <button
@@ -266,43 +249,17 @@ export default function SetupPage({ onStart }: SetupPageProps) {
             </div>
           </motion.div>
 
-          {/* Difficulty */}
+          {/* Info note */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="bg-card border border-card-border rounded-2xl p-5 shadow-sm"
+            className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              </div>
-              <h3 className="font-bold text-foreground text-lg">Difficulty</h3>
-            </div>
-
-            <div className="flex gap-3">
-              {(["easy", "medium", "hard"] as Difficulty[]).map(d => {
-                const selected = difficulties.includes(d);
-                const icons = { easy: "😊", medium: "🎯", hard: "🔥" };
-                const labels = { easy: "Easy", medium: "Medium", hard: "Hard" };
-                const colors = {
-                  easy: selected ? "bg-green-500 text-white" : "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800",
-                  medium: selected ? "bg-orange-500 text-white" : "bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800",
-                  hard: selected ? "bg-red-500 text-white" : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800",
-                };
-                return (
-                  <button
-                    key={d}
-                    data-testid={`button-difficulty-${d}`}
-                    onClick={() => toggleDifficulty(d)}
-                    className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-xl font-semibold text-sm transition-all ${colors[d]} ${selected ? "shadow-md scale-105" : ""}`}
-                  >
-                    <span className="text-xl">{icons[d]}</span>
-                    <span>{labels[d]}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <p className="text-sm text-amber-800 dark:text-amber-300 font-semibold mb-0.5">240+ movies in the pool</p>
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Random movies from the full corpus — Telugu, Hindi, Tamil, Malayalam & more. Before each round, the actor can also search and pick any specific movie.
+            </p>
           </motion.div>
 
           <motion.button

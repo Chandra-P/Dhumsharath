@@ -283,16 +283,8 @@ export function getMoviesByDifficulty(difficulty: Difficulty): Movie[] {
   return teluguMovies.filter(m => m.difficulty === difficulty);
 }
 
-export function getRandomMovies(difficulty: Difficulty, count: number): Movie[] {
-  const pool = getMoviesByDifficulty(difficulty);
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
-}
-
-export function getAllMoviesShuffled(difficulties: Difficulty[], count: number): Movie[] {
-  const pool = teluguMovies.filter(m => difficulties.includes(m.difficulty));
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+export function getAllMoviesShuffled(): Movie[] {
+  return [...teluguMovies].sort(() => Math.random() - 0.5);
 }
 
 export function searchMovies(query: string): Movie[] {
