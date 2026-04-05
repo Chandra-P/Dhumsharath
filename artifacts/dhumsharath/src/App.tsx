@@ -6,16 +6,16 @@ import ReadyPage from "@/pages/ReadyPage";
 import ActingPage from "@/pages/ActingPage";
 import ResultPage from "@/pages/ResultPage";
 import ScoreboardPage from "@/pages/ScoreboardPage";
-import type { GameSettings, GameState, Team } from "@/data/gameTypes";
+import type { GameSettings, GameState } from "@/data/gameTypes";
 import { getAllMoviesShuffled } from "@/data/movies";
-import type { Difficulty } from "@/data/movies";
+import type { Difficulty, Movie } from "@/data/movies";
 
 const queryClient = new QueryClient();
 
 function buildRounds(settings: GameSettings) {
   const { teams, roundsPerTeam, timePerRound, difficulties } = settings;
   const totalMoviesNeeded = teams.length * roundsPerTeam;
-  const movieQueue = getAllMoviesShuffled(difficulties as Difficulty[], totalMoviesNeeded + 10);
+  const movieQueue = getAllMoviesShuffled(difficulties as Difficulty[], totalMoviesNeeded + 20);
 
   const rounds = [];
   let movieIdx = 0;
@@ -50,8 +50,19 @@ function GameApp() {
     });
   }, []);
 
-  const handleBeginActing = useCallback(() => {
-    setGameState(prev => prev ? { ...prev, phase: "acting" } : prev);
+  const handleBeginActing = useCallback((overrideMovie?: Movie) => {
+    setGameState(prev => {
+      if (!prev) return prev;
+      if (overrideMovie) {
+        const updatedRounds = [...prev.rounds];
+        updatedRounds[prev.currentRoundIndex] = {
+          ...updatedRounds[prev.currentRoundIndex],
+          movie: overrideMovie,
+        };
+        return { ...prev, phase: "acting", rounds: updatedRounds };
+      }
+      return { ...prev, phase: "acting" };
+    });
   }, []);
 
   const handleGuessed = useCallback((timeUsed: number) => {
