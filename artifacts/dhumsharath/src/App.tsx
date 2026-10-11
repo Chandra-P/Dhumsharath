@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import AuthRoutes from "@/components/AuthRoutes";
 import SetupPage from "@/pages/SetupPage";
 import ReadyPage from "@/pages/ReadyPage";
 import ActingPage from "@/pages/ActingPage";
@@ -9,8 +9,6 @@ import ScoreboardPage from "@/pages/ScoreboardPage";
 import type { GameSettings, GameState } from "@/data/gameTypes";
 import { getAllMoviesShuffled } from "@/data/movies";
 import type { Movie } from "@/data/movies";
-
-const queryClient = new QueryClient();
 
 function buildRounds(settings: GameSettings) {
   const { teams, roundsPerTeam, timePerRound } = settings;
@@ -170,10 +168,5 @@ function GameApp() {
 }
 
 export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <GameApp />
-      <Toaster />
-    </QueryClientProvider>
-  );
+  return <AuthRoutes game={<GameApp />} toaster={<Toaster />} />;
 }

@@ -18,7 +18,12 @@ export default function SetupPage({ onStart }: SetupPageProps) {
   const [teams, setTeams] = useState<Team[]>(defaultTeams);
   const [roundsPerTeam, setRoundsPerTeam] = useState(3);
   const [timePerRound, setTimePerRound] = useState(60);
+  const [useCustomTime, setUseCustomTime] = useState(false);
+  const [customTimeInput, setCustomTimeInput] = useState("75");
   const [step, setStep] = useState<"welcome" | "config">("welcome");
+  const customTime = Number(customTimeInput);
+  const isValidCustomTime =
+    Number.isInteger(customTime) && customTime >= 10 && customTime <= 300;
 
   const addTeam = () => {
     if (teams.length >= 6) return;
@@ -41,7 +46,12 @@ export default function SetupPage({ onStart }: SetupPageProps) {
   };
 
   const handleStart = () => {
-    onStart({ teams, roundsPerTeam, timePerRound });
+    if (useCustomTime && !isValidCustomTime) return;
+    onStart({
+      teams,
+      roundsPerTeam,
+      timePerRound: useCustomTime ? customTime : timePerRound,
+    });
   };
 
   if (step === "welcome") {
@@ -237,9 +247,13 @@ export default function SetupPage({ onStart }: SetupPageProps) {
                 <button
                   key={t}
                   data-testid={`button-time-${t}`}
-                  onClick={() => setTimePerRound(t)}
+                  aria-pressed={!useCustomTime && timePerRound === t}
+                  onClick={() => {
+                    setTimePerRound(t);
+                    setUseCustomTime(false);
+                  }}
                   className={`px-4 h-11 rounded-xl font-bold text-sm transition-all ${
-                    timePerRound === t
+                    !useCustomTime && timePerRound === t
                       ? "bg-primary text-primary-foreground shadow-md scale-105"
                       : "bg-muted text-muted-foreground hover:bg-muted/70"
                   }`}
@@ -247,7 +261,53 @@ export default function SetupPage({ onStart }: SetupPageProps) {
                   {t}s
                 </button>
               ))}
+              <button
+                type="button"
+                data-testid="button-time-custom"
+                aria-pressed={useCustomTime}
+                onClick={() => setUseCustomTime(true)}
+                className={`px-4 h-11 rounded-xl font-bold text-sm transition-all ${
+                  useCustomTime
+                    ? "bg-primary text-primary-foreground shadow-md scale-105"
+                    : "bg-muted text-muted-foreground hover:bg-muted/70"
+                }`}
+              >
+                Custom
+              </button>
             </div>
+            {useCustomTime && (
+              <div className="mt-4 max-w-xs">
+                <label htmlFor="custom-round-time" className="mb-2 block text-sm font-medium text-foreground">
+                  Round duration
+                </label>
+                <div className="flex items-center gap-3">
+                  <input
+                    id="custom-round-time"
+                    data-testid="input-custom-round-time"
+                    type="number"
+                    inputMode="numeric"
+                    min={10}
+                    max={300}
+                    step={1}
+                    required
+                    value={customTimeInput}
+                    aria-invalid={!isValidCustomTime}
+                    aria-describedby="custom-round-time-help"
+                    onChange={(event) => setCustomTimeInput(event.target.value)}
+                    className="h-11 w-28 rounded-xl border border-input bg-background px-3 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                  <span className="text-sm text-muted-foreground">seconds</span>
+                </div>
+                <p id="custom-round-time-help" className="mt-2 text-xs text-muted-foreground">
+                  Choose a whole number from 10 to 300 seconds.
+                </p>
+                {!isValidCustomTime && (
+                  <p role="alert" className="mt-1 text-xs font-medium text-destructive">
+                    Enter a whole number between 10 and 300.
+                  </p>
+                )}
+              </div>
+            )}
           </motion.div>
 
           {/* Info note */}
@@ -266,6 +326,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
           <motion.button
             data-testid="button-start-setup"
             onClick={handleStart}
+            disabled={useCustomTime && !isValidCustomTime}
             className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
+@layer theme, base, clerk, components, utilities;
 @import "tailwindcss";
+@import "@clerk/themes/shadcn.css";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
+
+.cl-formFieldInput::placeholder {
+  color: #78675c;
+  opacity: 1;
+}
 
 @theme inline {
   --color-background: hsl(var(--background));
