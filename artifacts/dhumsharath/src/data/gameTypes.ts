@@ -1,4 +1,4 @@
-import type { Movie } from "./movies";
+import type { Movie, MovieLanguage } from "./movies";
 
 export interface Team {
   id: string;
@@ -21,6 +21,7 @@ export interface GameSettings {
   teams: Team[];
   roundsPerTeam: number;
   timePerRound: number;
+  movieLanguage: MovieLanguage | null;
 }
 
 export type GamePhase =

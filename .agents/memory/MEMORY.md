@@ -1,2 +1,3 @@
 - [Movie catalog policy](movie-catalog-policy.md) — use verified released films when refreshing the built-in library, not announced release plans.
 - [Gameplay access](gameplay-access.md) — players must sign in before starting a game; guest play is not the intended access model.
+- [pnpm configuration rewrites](pnpm-config-rewrites.md) — dependency updates can strip YAML comments; preserve security and exact-version rationale.

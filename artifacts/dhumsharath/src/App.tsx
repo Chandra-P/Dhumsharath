@@ -11,15 +11,15 @@ import { getAllMoviesShuffled } from "@/data/movies";
 import type { Movie } from "@/data/movies";
 
 function buildRounds(settings: GameSettings) {
-  const { teams, roundsPerTeam, timePerRound } = settings;
-  // Full corpus, fully shuffled — no count cap, no difficulty filter
-  const shuffled = getAllMoviesShuffled();
+  const { teams, roundsPerTeam, timePerRound, movieLanguage } = settings;
+  // Shuffle the selected language pool without a count or difficulty cap.
+  const shuffled = getAllMoviesShuffled(movieLanguage);
 
   const rounds = [];
   let movieIdx = 0;
   for (let r = 0; r < roundsPerTeam; r++) {
     for (const team of teams) {
-      // Cycle through the full shuffled list if needed
+      // Cycle through the selected shuffled list if needed
       const movie = shuffled[movieIdx % shuffled.length];
       movieIdx++;
       rounds.push({

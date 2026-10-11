@@ -1181,8 +1181,14 @@ export function getMoviesByDifficulty(difficulty: Difficulty): Movie[] {
   return teluguMovies.filter(m => m.difficulty === difficulty);
 }
 
-export function getAllMoviesShuffled(): Movie[] {
-  return [...teluguMovies].sort(() => Math.random() - 0.5);
+export function getMoviesForLanguage(language: MovieLanguage | null = null): Movie[] {
+  return language
+    ? teluguMovies.filter(movie => getMovieLanguage(movie) === language)
+    : [...teluguMovies];
+}
+
+export function getAllMoviesShuffled(language: MovieLanguage | null = null): Movie[] {
+  return getMoviesForLanguage(language).sort(() => Math.random() - 0.5);
 }
 
 export function getMovieLanguage(movie: Pick<Movie, "id">): MovieLanguage {

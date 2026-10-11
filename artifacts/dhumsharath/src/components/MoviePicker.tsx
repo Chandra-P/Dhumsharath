@@ -1,10 +1,12 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Film, ChevronRight, Filter, PenLine } from "lucide-react";
-import { getMovieLanguage, MOVIE_LANGUAGES, searchMovies, teluguMovies } from "@/data/movies";
+import { getMovieLanguage, searchMovies, teluguMovies } from "@/data/movies";
+import LanguageSelector from "@/components/LanguageSelector";
 import type { Movie, Difficulty, Genre, MovieLanguage } from "@/data/movies";
 
 interface MoviePickerProps {
+  initialLanguage?: MovieLanguage | null;
   onSelect: (movie: Movie) => void;
   onClose: () => void;
 }
@@ -24,11 +26,11 @@ const genreEmojis: Record<Genre, string> = {
   horror: "👻", "sci-fi": "🚀", adventure: "🧭",
 };
 
-export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
+export default function MoviePicker({ onSelect, onClose, initialLanguage = null }: MoviePickerProps) {
   const [query, setQuery] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
   const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState<MovieLanguage | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<MovieLanguage | null>(initialLanguage);
   const [showFilters, setShowFilters] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -128,6 +130,15 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
           )}
         </AnimatePresence>
 
+        <div className="mb-3">
+          <LanguageSelector
+            value={selectedLanguage}
+            onChange={setSelectedLanguage}
+            testIdPrefix="filter-language"
+            compact
+          />
+        </div>
+
         {/* Filter row */}
         <div className="flex items-center gap-2">
           <button
@@ -159,26 +170,6 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
               className="overflow-hidden"
             >
               <div className="pt-3 space-y-3">
-                <div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Language</p>
-                  <div className="flex flex-wrap gap-2">
-                    {MOVIE_LANGUAGES.map(language => (
-                      <button
-                        key={language}
-                        data-testid={`filter-language-${language.toLowerCase()}`}
-                        aria-pressed={selectedLanguage === language}
-                        onClick={() => setSelectedLanguage(selectedLanguage === language ? null : language)}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-                          selectedLanguage === language
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        {language}
-                      </button>
-                    ))}
-                  </div>
-                </div>
                 <div>
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Difficulty</p>
                   <div className="flex gap-2">

@@ -54,6 +54,9 @@ export default function ReadyPage({ state, onBegin }: ReadyPageProps) {
             <span className="text-sm font-semibold text-muted-foreground bg-muted px-3 py-1 rounded-full">
               Round {roundNum} of {totalRounds}
             </span>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Movie pool: {settings.movieLanguage ?? "All languages"}
+            </p>
           </div>
 
           <motion.div
@@ -172,6 +175,7 @@ export default function ReadyPage({ state, onBegin }: ReadyPageProps) {
       <AnimatePresence>
         {showPicker && (
           <MoviePicker
+            initialLanguage={settings.movieLanguage}
             onSelect={handlePickMovie}
             onClose={() => setShowPicker(false)}
           />

@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { Users, Clock, Trophy, ChevronRight, Plus, Trash2 } from "lucide-react";
 import type { GameSettings, Team } from "@/data/gameTypes";
 import { TEAM_COLORS } from "@/data/gameTypes";
-import { teluguMovies } from "@/data/movies";
+import { getMoviesForLanguage, teluguMovies } from "@/data/movies";
+import type { MovieLanguage } from "@/data/movies";
+import LanguageSelector from "@/components/LanguageSelector";
 
 interface SetupPageProps {
   onStart: (settings: GameSettings) => void;
@@ -18,12 +20,14 @@ export default function SetupPage({ onStart }: SetupPageProps) {
   const [teams, setTeams] = useState<Team[]>(defaultTeams);
   const [roundsPerTeam, setRoundsPerTeam] = useState(3);
   const [timePerRound, setTimePerRound] = useState(60);
+  const [movieLanguage, setMovieLanguage] = useState<MovieLanguage | null>(null);
   const [useCustomTime, setUseCustomTime] = useState(false);
   const [customTimeInput, setCustomTimeInput] = useState("75");
   const [step, setStep] = useState<"welcome" | "config">("welcome");
   const customTime = Number(customTimeInput);
   const isValidCustomTime =
     Number.isInteger(customTime) && customTime >= 10 && customTime <= 300;
+  const moviePoolSize = getMoviesForLanguage(movieLanguage).length;
 
   const addTeam = () => {
     if (teams.length >= 6) return;
@@ -51,6 +55,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
       teams,
       roundsPerTeam,
       timePerRound: useCustomTime ? customTime : timePerRound,
+      movieLanguage,
     });
   };
 
@@ -198,6 +203,22 @@ export default function SetupPage({ onStart }: SetupPageProps) {
             )}
           </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="bg-card border border-card-border rounded-2xl p-5 shadow-sm"
+          >
+            <LanguageSelector
+              value={movieLanguage}
+              onChange={setMovieLanguage}
+              testIdPrefix="setup-language"
+            />
+            <p className="mt-3 text-xs text-muted-foreground">
+              Random movies will come from {movieLanguage ?? "all languages"}.
+            </p>
+          </motion.div>
+
           {/* Rounds */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -317,9 +338,9 @@ export default function SetupPage({ onStart }: SetupPageProps) {
             transition={{ delay: 0.3 }}
             className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4"
           >
-            <p className="text-sm text-amber-800 dark:text-amber-300 font-semibold mb-0.5">{teluguMovies.length.toLocaleString()} movies in the pool</p>
+            <p className="text-sm text-amber-800 dark:text-amber-300 font-semibold mb-0.5">{moviePoolSize.toLocaleString()} movies in the {movieLanguage ?? "all-language"} pool</p>
             <p className="text-xs text-amber-700 dark:text-amber-400">
-              Random movies from the full corpus — Telugu, Hindi, Tamil, Malayalam & more. Before each round, the actor can also search and pick any specific movie.
+              Your language choice applies to every random round. Before each round, the actor can also search and pick a specific movie.
             </p>
           </motion.div>
 
