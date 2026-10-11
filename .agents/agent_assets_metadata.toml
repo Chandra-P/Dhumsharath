@@ -1,0 +1,30 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "lMsOjypW3nsFVs3LAW_o2"
+uri = "file://generated-artifacts/documentation/Indian_Dumb_Charades_Project_Report.pdf"
+type = "pdf"
+title = "Project Submission Report — PDF"
+description = "An eight-page report covering objectives, features, architecture, data model, setup, testing, security, limitations, and future improvements."
+logical_id = "70870aed-16f3-448d-b217-4fa2f07f8303"
+content_hash = "sha256:8aa2b803c11b27e6c1eb8b8e42a092032b4710390d5e94e399897bf8a2352441"
+size = 19414
+mtime_ms = 1791752605558
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:7045e50f-3fca-4829-a70d-8daad24ac74f/70870aed-16f3-448d-b217-4fa2f07f8303/402d20fc-e007-430e-a33c-24006d58fec1"
+storage_version_token = "1791752672149135"
+content_type = "application/pdf"
+
+[[outputs]]
+id = "l0uTl1YMhBxwtc0NhQaT5"
+uri = "file://generated-artifacts/documentation/Indian_Dumb_Charades_Project_Report.docx"
+type = "word_document"
+title = "Project Submission Report — Editable Word"
+description = "Editable copy of the report. Fill in your name, institution/course, instructor, and submission date before handing it in."
+logical_id = "713db3f1-0882-4572-a2ac-e9f6d75876af"
+content_hash = "sha256:f152889255eae81fcb99d3e299ac2975cb75fa74a72298c30f327f3abd07b3d6"
+size = 44362
+mtime_ms = 1791752605570
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:7045e50f-3fca-4829-a70d-8daad24ac74f/713db3f1-0882-4572-a2ac-e9f6d75876af/23364fb1-6eac-4ba5-9c37-e0907414017d"
+storage_version_token = "1791752672638843"
+content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
