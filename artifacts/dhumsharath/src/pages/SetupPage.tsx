@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Users, Clock, Trophy, ChevronRight, Plus, Trash2 } from "lucide-react";
 import type { GameSettings, Team } from "@/data/gameTypes";
 import { TEAM_COLORS } from "@/data/gameTypes";
+import { teluguMovies } from "@/data/movies";
 
 interface SetupPageProps {
   onStart: (settings: GameSettings) => void;
@@ -71,7 +72,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
           <p className="text-xl font-bold text-primary mb-2">ధుమ్ షారాత్</p>
           <p className="text-muted-foreground text-lg mb-2">Act out movies without speaking!</p>
           <p className="text-muted-foreground/70 text-sm mb-10">
-            1000+ movies — Telugu, Hindi, Tamil, Malayalam & more
+            {teluguMovies.length.toLocaleString()} movies — Telugu, Hindi, Tamil, Malayalam & more
           </p>
 
           <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -256,7 +257,7 @@ export default function SetupPage({ onStart }: SetupPageProps) {
             transition={{ delay: 0.3 }}
             className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4"
           >
-            <p className="text-sm text-amber-800 dark:text-amber-300 font-semibold mb-0.5">1000+ movies in the pool</p>
+            <p className="text-sm text-amber-800 dark:text-amber-300 font-semibold mb-0.5">{teluguMovies.length.toLocaleString()} movies in the pool</p>
             <p className="text-xs text-amber-700 dark:text-amber-400">
               Random movies from the full corpus — Telugu, Hindi, Tamil, Malayalam & more. Before each round, the actor can also search and pick any specific movie.
             </p>

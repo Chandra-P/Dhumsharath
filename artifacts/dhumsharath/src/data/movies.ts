@@ -1,5 +1,7 @@
 export type Difficulty = "easy" | "medium" | "hard";
-export type Genre = "action" | "romance" | "comedy" | "drama" | "thriller" | "family" | "historical" | "fantasy" | "horror" | "sci-fi";
+export type Genre = "action" | "romance" | "comedy" | "drama" | "thriller" | "family" | "historical" | "fantasy" | "horror" | "sci-fi" | "adventure";
+export const MOVIE_LANGUAGES = ["Telugu", "Hindi", "Tamil", "Malayalam", "Kannada", "English"] as const;
+export type MovieLanguage = (typeof MOVIE_LANGUAGES)[number] | "Other";
 
 export interface Movie {
   id: number;
@@ -1085,7 +1087,6 @@ export const teluguMovies: Movie[] = [
   { id: 993, title: "Bangarraju", year: 2022, genre: "comedy", difficulty: "easy", hint: "Nagarjuna Jr NTR ghost grandfather" },
   { id: 994, title: "Karthikeya 2", year: 2022, genre: "thriller", difficulty: "medium", hint: "Nikhil Siddharth Dwarka mystery dive" },
   { id: 995, title: "Pushpa Rule", year: 2024, genre: "action", difficulty: "easy", hint: "Allu Arjun part 2 rule established" },
-  { id: 996, title: "Spirit", year: 2025, genre: "action", difficulty: "medium", hint: "Prabhas upcoming Sandeep Vanga" },
   { id: 997, title: "Adipurush", year: 2023, genre: "historical", difficulty: "easy", hint: "Prabhas Ramayana retelling Lanka CGI" },
   { id: 998, title: "Bro: The Avatar", year: 2023, genre: "comedy", difficulty: "medium", hint: "Pawan Kalyan God gives second chance" },
   { id: 999, title: "Naa Saami Ranga", year: 2024, genre: "action", difficulty: "easy", hint: "Nagarjuna Rayalaseema mass Telugu" },
@@ -1095,6 +1096,85 @@ export const teluguMovies: Movie[] = [
   { id: 1003, title: "HanuMan 2024", year: 2024, genre: "fantasy", difficulty: "easy", hint: "Teja Sajja superhero Lord Hanuman" },
   { id: 1004, title: "Lucky Baskhar", year: 2024, genre: "thriller", difficulty: "easy", hint: "Dulquer Salmaan Telugu bank crime" },
   { id: 1005, title: "Saripodhaa Sanivaaram", year: 2024, genre: "action", difficulty: "easy", hint: "NTR Jr Trivikram Saturday justice" },
+
+  // ──────────── RECENT RELEASES: 2025 ────────────
+  { id: 1006, title: "Sankranthiki Vasthunam", year: 2025, genre: "comedy", difficulty: "easy", hint: "Retired cop caught between his wife and ex-girlfriend" },
+  { id: 1007, title: "Thandel", year: 2025, genre: "romance", difficulty: "medium", hint: "Fisherman from Srikakulam detained in Pakistan" },
+  { id: 1008, title: "Court: State vs. A Nobody", year: 2025, genre: "drama", difficulty: "medium", hint: "Young couple challenges a powerful legal system" },
+  { id: 1009, title: "HIT: The Third Case", year: 2025, genre: "thriller", difficulty: "easy", hint: "Nani plays a relentless investigator tracking a serial killer" },
+  { id: 1010, title: "Mad Square", year: 2025, genre: "comedy", difficulty: "easy", hint: "College friends return for another round of chaos" },
+  { id: 1011, title: "Kuberaa", year: 2025, genre: "drama", difficulty: "medium", hint: "A beggar gets pulled into a high-stakes money scheme" },
+  { id: 1012, title: "Hari Hara Veera Mallu", year: 2025, genre: "historical", difficulty: "medium", hint: "Legendary outlaw challenges the Mughal empire" },
+  { id: 1013, title: "Kingdom", year: 2025, genre: "action", difficulty: "medium", hint: "A cop goes undercover in a dangerous island gang" },
+  { id: 1014, title: "Mirai", year: 2025, genre: "fantasy", difficulty: "medium", hint: "A young warrior guards powerful ancient artifacts" },
+  { id: 1015, title: "They Call Him OG", year: 2025, genre: "action", difficulty: "easy", hint: "A feared gangster returns to Mumbai after years away" },
+  { id: 1016, title: "Mass Jathara", year: 2025, genre: "action", difficulty: "easy", hint: "A railway police officer takes on a local crime boss" },
+  { id: 1017, title: "Game Changer", year: 2025, genre: "action", difficulty: "easy", hint: "An honest officer takes on political corruption" },
+  { id: 1018, title: "Daaku Maharaaj", year: 2025, genre: "action", difficulty: "easy", hint: "A fugitive protects a family from a ruthless politician" },
+  { id: 1019, title: "Robinhood", year: 2025, genre: "comedy", difficulty: "easy", hint: "A thief steals from the rich and gets tangled with a security agent" },
+  { id: 1020, title: "Arjun S/O Vyjayanthi", year: 2025, genre: "action", difficulty: "medium", hint: "A mother and son end up on opposite sides of the law" },
+  { id: 1021, title: "Single", year: 2025, genre: "romance", difficulty: "easy", hint: "A carefree bachelor gets caught in a romantic triangle" },
+  { id: 1022, title: "Ramam Raghavam", year: 2025, genre: "drama", difficulty: "medium", hint: "A son faces the consequences of betraying his father" },
+  { id: 1023, title: "Jack", year: 2025, genre: "action", difficulty: "medium", hint: "A young spy gets swept into an international mission" },
+  { id: 1024, title: "Chhaava", year: 2025, genre: "historical", difficulty: "medium", hint: "Vicky Kaushal portrays Maratha ruler Sambhaji" },
+  { id: 1025, title: "Saiyaara", year: 2025, genre: "romance", difficulty: "easy", hint: "Two young artists find love through music" },
+  { id: 1026, title: "Dhurandhar", year: 2025, genre: "action", difficulty: "medium", hint: "An undercover agent infiltrates a Karachi crime network" },
+  { id: 1027, title: "Sitaare Zameen Par", year: 2025, genre: "comedy", difficulty: "easy", hint: "A basketball coach learns from a team of neurodivergent players" },
+  { id: 1028, title: "Raid 2", year: 2025, genre: "thriller", difficulty: "easy", hint: "An income tax officer targets a powerful politician" },
+  { id: 1029, title: "Sky Force", year: 2025, genre: "action", difficulty: "medium", hint: "Indian Air Force pilots face a 1965 wartime mission" },
+  { id: 1030, title: "Kesari Chapter 2", year: 2025, genre: "historical", difficulty: "medium", hint: "A lawyer seeks justice for the Jallianwala Bagh massacre" },
+  { id: 1031, title: "Housefull 5", year: 2025, genre: "comedy", difficulty: "easy", hint: "A billionaire's yacht becomes the scene of a murder mystery" },
+  { id: 1032, title: "War 2", year: 2025, genre: "action", difficulty: "easy", hint: "Two elite agents clash in a globe-spanning spy mission" },
+  { id: 1033, title: "Jaat", year: 2025, genre: "action", difficulty: "easy", hint: "A stranger challenges a ruthless village strongman" },
+  { id: 1034, title: "Deva", year: 2025, genre: "thriller", difficulty: "medium", hint: "A cop investigates a murder after losing his memory" },
+  { id: 1035, title: "Sikandar", year: 2025, genre: "action", difficulty: "easy", hint: "A ruler fights to protect ordinary people" },
+  { id: 1036, title: "Bhool Chuk Maaf", year: 2025, genre: "comedy", difficulty: "easy", hint: "A groom gets stuck repeating the day of his wedding" },
+  { id: 1037, title: "Dhadak 2", year: 2025, genre: "romance", difficulty: "medium", hint: "Two students fall in love across a rigid social divide" },
+  { id: 1038, title: "Metro... In Dino", year: 2025, genre: "romance", difficulty: "medium", hint: "Modern city couples navigate love and relationships" },
+  { id: 1039, title: "Tere Ishk Mein", year: 2025, genre: "romance", difficulty: "medium", hint: "A passionate romance reunites Dhanush and Aanand L Rai" },
+  { id: 1040, title: "Vidaamuyarchi", year: 2025, genre: "thriller", difficulty: "medium", hint: "A man searches for his missing wife in Azerbaijan" },
+  { id: 1041, title: "Dragon", year: 2025, genre: "comedy", difficulty: "easy", hint: "A college dropout tries to rebuild his life after heartbreak" },
+  { id: 1042, title: "Kudumbasthan", year: 2025, genre: "comedy", difficulty: "easy", hint: "A newlywed husband juggles family and money troubles" },
+  { id: 1043, title: "Tourist Family", year: 2025, genre: "comedy", difficulty: "easy", hint: "A Sri Lankan family starts over in Chennai" },
+  { id: 1044, title: "Good Bad Ugly", year: 2025, genre: "action", difficulty: "easy", hint: "A former gangster tries to protect his son from his past" },
+  { id: 1045, title: "Retro", year: 2025, genre: "action", difficulty: "medium", hint: "A gangster vows to leave violence behind for love" },
+  { id: 1046, title: "Thug Life", year: 2025, genre: "action", difficulty: "medium", hint: "A crime boss confronts betrayal within his adopted family" },
+  { id: 1047, title: "Coolie", year: 2025, genre: "action", difficulty: "easy", hint: "A former gold smuggler returns to uncover a deadly conspiracy" },
+  { id: 1048, title: "Bison Kaalamaadan", year: 2025, genre: "drama", difficulty: "medium", hint: "A kabaddi player fights social barriers to reach the top" },
+  { id: 1049, title: "Maaman", year: 2025, genre: "family", difficulty: "easy", hint: "A devoted uncle navigates family bonds and new responsibilities" },
+  { id: 1050, title: "3BHK", year: 2025, genre: "drama", difficulty: "medium", hint: "A middle-class family works toward owning a home" },
+  { id: 1051, title: "Idli Kadai", year: 2025, genre: "drama", difficulty: "medium", hint: "A man returns to his hometown and his father's idli shop" },
+  { id: 1052, title: "Rekhachithram", year: 2025, genre: "thriller", difficulty: "medium", hint: "A police officer investigates a decades-old disappearance" },
+  { id: 1053, title: "Officer on Duty", year: 2025, genre: "thriller", difficulty: "medium", hint: "A suspended cop uncovers a counterfeit jewelry racket" },
+  { id: 1054, title: "Ponman", year: 2025, genre: "drama", difficulty: "medium", hint: "A gold dealer tries to recover jewelry after a wedding" },
+  { id: 1055, title: "Alappuzha Gymkhana", year: 2025, genre: "comedy", difficulty: "easy", hint: "A group of friends take up boxing after missing college admission" },
+  { id: 1056, title: "L2: Empuraan", year: 2025, genre: "action", difficulty: "easy", hint: "Stephen Nedumpally's hidden world of power expands" },
+  { id: 1057, title: "Thudarum", year: 2025, genre: "thriller", difficulty: "medium", hint: "A taxi driver's missing car leads to a dangerous secret" },
+  { id: 1058, title: "Lokah Chapter 1: Chandra", year: 2025, genre: "fantasy", difficulty: "easy", hint: "A mysterious woman with superpowers protects Bengaluru" },
+  { id: 1059, title: "Eko", year: 2025, genre: "thriller", difficulty: "medium", hint: "A search for a missing man unfolds in the Western Ghats" },
+  { id: 1060, title: "Feminichi Fathima", year: 2025, genre: "drama", difficulty: "medium", hint: "A homemaker quietly claims a room of her own" },
+  { id: 1061, title: "Ronth", year: 2025, genre: "thriller", difficulty: "medium", hint: "Two police officers face a difficult night on patrol" },
+  { id: 1062, title: "Narivetta", year: 2025, genre: "drama", difficulty: "medium", hint: "A young police officer is sent into a tense forest operation" },
+  { id: 1063, title: "Sarvam Maya", year: 2025, genre: "comedy", difficulty: "easy", hint: "A young priest's life changes after an unexpected haunting" },
+  { id: 1064, title: "Su From So", year: 2025, genre: "comedy", difficulty: "easy", hint: "A village mistakes one man's strange behavior for a spirit" },
+  { id: 1065, title: "Kantara: Chapter 1", year: 2025, genre: "fantasy", difficulty: "medium", hint: "A prequel explores the origins of the forest guardian" },
+  { id: 1066, title: "Mahavatar Narasimha", year: 2025, genre: "fantasy", difficulty: "easy", hint: "An animated retelling of Prahlada and Lord Narasimha" },
+  { id: 1067, title: "F1", year: 2025, genre: "drama", difficulty: "easy", hint: "A veteran driver returns to Formula One to mentor a rookie" },
+  { id: 1068, title: "Superman", year: 2025, genre: "action", difficulty: "easy", hint: "The Man of Steel balances heroism with his human roots" },
+  { id: 1069, title: "Mission: Impossible – The Final Reckoning", year: 2025, genre: "action", difficulty: "easy", hint: "Ethan Hunt races to stop a powerful artificial intelligence" },
+  { id: 1070, title: "Jurassic World Rebirth", year: 2025, genre: "sci-fi", difficulty: "easy", hint: "A team ventures to an island where dinosaurs still survive" },
+  { id: 1071, title: "The Fantastic Four: First Steps", year: 2025, genre: "sci-fi", difficulty: "easy", hint: "Marvel's first family faces a cosmic threat" },
+  { id: 1072, title: "A Minecraft Movie", year: 2025, genre: "comedy", difficulty: "easy", hint: "A group of newcomers gets pulled into a block-built world" },
+  { id: 1073, title: "Lilo & Stitch", year: 2025, genre: "family", difficulty: "easy", hint: "A Hawaiian girl adopts a mischievous blue alien" },
+  { id: 1074, title: "Sinners", year: 2025, genre: "horror", difficulty: "medium", hint: "Twin brothers return home and face a supernatural evil" },
+  { id: 1075, title: "Avatar: Fire and Ash", year: 2025, genre: "sci-fi", difficulty: "medium", hint: "Jake and Neytiri encounter a new Na'vi clan on Pandora" },
+  { id: 1076, title: "The Raja Saab", year: 2026, genre: "comedy", difficulty: "easy", hint: "A young man discovers his family's haunted ancestral palace" },
+  { id: 1077, title: "Mana Shankara Vara Prasad Garu", year: 2026, genre: "comedy", difficulty: "easy", hint: "A security officer tries to reconnect with his estranged family" },
+  { id: 1078, title: "Dhurandhar: The Revenge", year: 2026, genre: "action", difficulty: "medium", hint: "An undercover operative returns to settle scores across the border" },
+  { id: 1079, title: "Drishyam: The Conclusion", year: 2026, genre: "thriller", difficulty: "medium", hint: "Vijay Salgaonkar's carefully hidden secret faces a new threat" },
+  { id: 1080, title: "Karuppu", year: 2026, genre: "fantasy", difficulty: "easy", hint: "A lawyer channels a fierce village deity to fight injustice" },
+  { id: 1081, title: "Drishyam 3", year: 2026, genre: "thriller", difficulty: "medium", hint: "Georgekutty faces a new threat to his family's buried secret" },
+  { id: 1082, title: "Toxic: A Fairy Tale for Grown-Ups", year: 2026, genre: "action", difficulty: "medium", hint: "A crime boss rises through the underworld of 1940s Goa" },
 ];
 
 export function getMoviesByDifficulty(difficulty: Difficulty): Movie[] {
@@ -1103,6 +1183,27 @@ export function getMoviesByDifficulty(difficulty: Difficulty): Movie[] {
 
 export function getAllMoviesShuffled(): Movie[] {
   return [...teluguMovies].sort(() => Math.random() - 0.5);
+}
+
+export function getMovieLanguage(movie: Pick<Movie, "id">): MovieLanguage {
+  const { id } = movie;
+
+  // Existing catalog IDs follow the language-grouped sections below; isolate
+  // mixed-section exceptions explicitly so filters stay accurate.
+  if (id <= 230 || (id >= 601 && id <= 614) || (id >= 645 && id <= 654) || (id >= 801 && id <= 820) || (id >= 971 && id <= 1023) || (id >= 1076 && id <= 1077)) return "Telugu";
+  if ((id >= 231 && id <= 412) || (id >= 615 && id <= 644) || (id >= 655 && id <= 720) || (id >= 821 && id <= 850) || (id >= 866 && id <= 874) || (id >= 922 && id <= 946) || (id >= 1024 && id <= 1039) || (id >= 1078 && id <= 1079)) return "Hindi";
+  if ((id >= 413 && id <= 490) || (id >= 721 && id <= 740) || (id >= 876 && id <= 884) || (id >= 1040 && id <= 1051) || id === 920 || id === 1080) return "Tamil";
+  if ((id >= 491 && id <= 526) || (id >= 741 && id <= 760) || (id >= 1052 && id <= 1063) || id === 1081) return "Malayalam";
+  if ((id >= 527 && id <= 546) || id === 906 || id === 914 || (id >= 1064 && id <= 1065) || id === 1082) return "Kannada";
+  if ((id >= 547 && id <= 600) || (id >= 761 && id <= 800) || (id >= 885 && id <= 900) || (id >= 947 && id <= 970) || (id >= 1067 && id <= 1075)) return "English";
+
+  if (id === 851 || id === 863) return "Telugu";
+  if ((id >= 852 && id <= 862) || (id >= 864 && id <= 865)) return "Tamil";
+  if (id === 875 || id === 921) return "Telugu";
+  if ((id >= 901 && id <= 919) && id !== 906 && id !== 914) return "Telugu";
+  if (id === 1066) return "Hindi";
+
+  return "Other";
 }
 
 export function searchMovies(query: string): Movie[] {

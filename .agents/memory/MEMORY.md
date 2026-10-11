@@ -1,0 +1,1 @@
+- [Movie catalog policy](movie-catalog-policy.md) — use verified released films when refreshing the built-in library, not announced release plans.

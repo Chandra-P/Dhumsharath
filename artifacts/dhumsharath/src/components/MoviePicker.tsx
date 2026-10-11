@@ -1,15 +1,15 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Film, ChevronRight, Filter, PenLine } from "lucide-react";
-import { searchMovies, teluguMovies } from "@/data/movies";
-import type { Movie, Difficulty, Genre } from "@/data/movies";
+import { getMovieLanguage, MOVIE_LANGUAGES, searchMovies, teluguMovies } from "@/data/movies";
+import type { Movie, Difficulty, Genre, MovieLanguage } from "@/data/movies";
 
 interface MoviePickerProps {
   onSelect: (movie: Movie) => void;
   onClose: () => void;
 }
 
-const ALL_GENRES: Genre[] = ["action", "romance", "comedy", "drama", "thriller", "family", "historical", "fantasy", "horror", "sci-fi"];
+const ALL_GENRES: Genre[] = ["action", "romance", "comedy", "drama", "thriller", "family", "historical", "fantasy", "horror", "sci-fi", "adventure"];
 const DIFFICULTIES: Difficulty[] = ["easy", "medium", "hard"];
 
 const difficultyColors: Record<Difficulty, string> = {
@@ -21,13 +21,14 @@ const difficultyColors: Record<Difficulty, string> = {
 const genreEmojis: Record<Genre, string> = {
   action: "💥", romance: "❤️", comedy: "😂", drama: "🎭",
   thriller: "🔪", family: "👨‍👩‍👧", historical: "📜", fantasy: "✨",
-  horror: "👻", "sci-fi": "🚀",
+  horror: "👻", "sci-fi": "🚀", adventure: "🧭",
 };
 
 export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
   const [query, setQuery] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
   const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<MovieLanguage | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,15 +40,17 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
     let movies = query.trim() ? searchMovies(query) : [...teluguMovies];
     if (selectedDifficulty) movies = movies.filter(m => m.difficulty === selectedDifficulty);
     if (selectedGenre) movies = movies.filter(m => m.genre === selectedGenre);
+    if (selectedLanguage) movies = movies.filter(m => getMovieLanguage(m) === selectedLanguage);
     return movies.sort((a, b) => b.year - a.year);
-  }, [query, selectedDifficulty, selectedGenre]);
+  }, [query, selectedDifficulty, selectedGenre, selectedLanguage]);
 
   const trimmedQuery = query.trim();
-  const hasFilters = !!(selectedDifficulty || selectedGenre || trimmedQuery);
+  const hasFilters = !!(selectedDifficulty || selectedGenre || selectedLanguage || trimmedQuery);
 
   const clearFilters = () => {
     setSelectedDifficulty(null);
     setSelectedGenre(null);
+    setSelectedLanguage(null);
     setQuery("");
   };
 
@@ -157,6 +160,26 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
             >
               <div className="pt-3 space-y-3">
                 <div>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Language</p>
+                  <div className="flex flex-wrap gap-2">
+                    {MOVIE_LANGUAGES.map(language => (
+                      <button
+                        key={language}
+                        data-testid={`filter-language-${language.toLowerCase()}`}
+                        aria-pressed={selectedLanguage === language}
+                        onClick={() => setSelectedLanguage(selectedLanguage === language ? null : language)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                          selectedLanguage === language
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {language}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Difficulty</p>
                   <div className="flex gap-2">
                     {DIFFICULTIES.map(d => (
@@ -239,6 +262,7 @@ export default function MoviePicker({ onSelect, onClose }: MoviePickerProps) {
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-xs text-muted-foreground">{movie.year}</span>
                 <span className="text-xs text-muted-foreground capitalize">· {movie.genre}</span>
+                <span className="text-xs text-muted-foreground">· {getMovieLanguage(movie)}</span>
               </div>
             </div>
             <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
